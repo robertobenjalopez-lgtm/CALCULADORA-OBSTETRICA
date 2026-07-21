@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Edad Gestacional - Unidad Ecografía Obstétrica HDFRZ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        body {
+            background-color: #f4f6f9;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* CABECERA UNIDAD MATERNO FETAL */
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            padding: 20px 28px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 5px solid #0ea5e9;
+            margin-bottom: 25px;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .header-logo {
+            background: rgba(14, 165, 233, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.1);
+        }
+        .header-titles h1 {
+            margin: 0;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #f8fafc;
+            text-transform: uppercase;
+        }
+        .badge-hdfrz {
+            background: #0ea5e9;
+            color: #ffffff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+        .header-sub {
+            margin: 4px 0 0 0;
+            font-size: 0.88rem;
+            color: #94a3b8;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* LAYOUT PRINCIPAL: CALCULADORA + SIDEBAR */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        /* DISPOSICIÓN HORIZONTAL 2 Y 2 DE LAS CARDS */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card-title {
+            font-weight: bold;
+            font-size: 11px;
+            text-transform: uppercase;
+            padding: 8px 12px;
+            background-color: #0f172a;
+            color: #ffffff;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+        .inner-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+        input {
+            padding: 9px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 100%;
+            outline: none;
+        }
+        input:focus {
+            border-color: #0ea5e9;
+        }
+        .output-orange {
+            background-color: #ed8936;
+            color: white;
+            font-weight: bold;
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 15px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .output-green {
+            background-color: #38a169;
+            color: white;
+            font-weight: bold;
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 15px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* PANEL LATERAL DE VENTANAS ECOGRÁFICAS */
+        .sidebar-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+            border-top: 4px solid #0ea5e9;
+        }
+        .sidebar-title {
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #0f172a;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+            letter-spacing: 0.5px;
+        }
+        .window-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        .window-box:last-child {
+            margin-bottom: 0;
+        }
+        .window-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #334155;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        .window-dates {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0ea5e9;
+            background: #ffffff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            text-align: center;
+        }
+
+        .btn-clear {
+            width: 100%;
+            background-color: #0ea5e9;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+        .btn-clear:hover {
+            background-color: #0284c7;
+        }
+
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ENCABEZADO UNIDAD DE ECOGRAFÍA OBSTÉTRICA HDFRZ -->
+    <header>
+        <div class="header-content">
+            <div class="header-logo">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                    <path d="M12 13a4 4 0 0 0-4 4v1h8v-1a4 4 0 0 0-4-4z"></path>
+                    <path d="M16 8a2.5 2.5 0 0 1 0 5"></path>
+                </svg>
+            </div>
+
+            <div class="header-titles">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <h1>Unidad de Ecografía Obstétrica</h1>
+                    <span class="badge-hdfrz">HDFRZ</span>
+                </div>
+                <p class="header-sub">
+                    <span>Servicio de Ginecología y Obstetricia</span>
+                    <span style="color: #38bdf8;">•</span>
+                    <span style="color: #cbd5e1;">Medicina Materno Fetal</span>
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- LAYOUT PRINCIPAL -->
+    <div class="main-layout">
+
+        <!-- BLOQUE IZQUIERDO: CARDS DE LA CALCULADORA -->
+        <div>
+            <div class="calculator-grid">
+
+                <!-- 1. FUR & EDAD GESTACIONAL (FUR PRINCIPAL) -->
+                <div class="card">
+                    <div>
+                        <div class="card-title">FUR & EDAD GESTACIONAL</div>
+                        <div class="inner-grid">
+                            <div class="field">
+                                <label>FUR</label>
+                                <input type="date" id="inputFUR" onchange="actualizarCalculosGlobales()">
+                            </div>
+                            <div class="field">
+                                <label>FPP (40 sem)</label>
+                                <div class="output-green" id="outFPP">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <label>Edad Gestacional Actual</label>
+                        <div class="output-orange" id="outEG_FUR">-</div>
+                    </div>
+                </div>
+
+                <!-- 2. FECHA POR EDAD GESTACIONAL -->
+                <div class="card">
+                    <div>
+                        <div class="card-title">FECHA POR EDAD GESTACIONAL</div>
+                        <div class="inner-grid">
+                            <div class="field" style="grid-column: span 2;">
+                                <label>EG deseada (Ej: 28+0)</label>
+                                <input type="text" id="inputEG1" placeholder="Ej: 28+0" oninput="calcularFechaPorEG()">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <label>Fecha en que cumplirá esa EG</label>
+                        <div class="output-orange" id="outFechaPorEG">-</div>
+                    </div>
+                </div>
+
+                <!-- 3. EDAD GESTACIONAL POR FECHA DE CONTROL -->
+                <div class="card">
+                    <div>
+                        <div class="card-title">EDAD GESTACIONAL POR FECHA DE CONTROL</div>
+                        <div class="inner-grid">
+                            <div class="field" style="grid-column: span 2;">
+                                <label>Fecha del Control / Ecografía</label>
+                                <input type="date" id="inputFechaControl" onchange="calcularEGPorFechaControl()">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <label>Edad Gestacional en esa Fecha</label>
+                        <div class="output-orange" id="outEGActual">-</div>
+                    </div>
+                </div>
+
+                <!-- 4. FUR POR EDAD GESTACIONAL -->
+                <div class="card">
+                    <div>
+                        <div class="card-title">FUR POR EDAD GESTACIONAL</div>
+                        <div class="inner-grid">
+                            <div class="field">
+                                <label>EG (Ej: 22+3)</label>
+                                <input type="text" id="inputEG2" placeholder="Ej: 22+3" oninput="calcularFURPorEG()">
+                            </div>
+                            <div class="field">
+                                <label>FUR Estimada</label>
+                                <div class="output-orange" id="outFURPorEG">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- BOTÓN LIMPIAR -->
+            <button class="btn-clear" onclick="limpiarTodo()">LIMPIAR</button>
+        </div>
+
+        <!-- BLOQUE DERECHO: VENTANAS ECOGRÁFICAS -->
+        <div class="sidebar-card">
+            <div class="sidebar-title">📅 Ventanas Ecográficas Sugeridas</div>
+
+            <!-- VENTANA 1 -->
+            <div class="window-box">
+                <div class="window-label">
+                    <span>ECO 11 - 13+6 SEMANAS</span>
+                    <span style="color: #0ea5e9;">Tamizaje 1.º Trim.</span>
+                </div>
+                <div class="window-dates" id="outVentana11_13">-</div>
+            </div>
+
+            <!-- VENTANA 2 -->
+            <div class="window-box">
+                <div class="window-label">
+                    <span>ECO 22 - 23+6 SEMANAS</span>
+                    <span style="color: #0ea5e9;">Anatómica / Morpho</span>
+                </div>
+                <div class="window-dates" id="outVentana22_23">-</div>
+            </div>
+
+            <!-- VENTANA 3 -->
+            <div class="window-box">
+                <div class="window-label">
+                    <span>ECO 28 - 30 SEMANAS</span>
+                    <span style="color: #0ea5e9;">Ecocardiografía Fetal</span>
+                </div>
+                <div class="window-dates" id="outVentana28_30">-</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function formatearFecha(fecha) {
+            const d = String(fecha.getDate()).padStart(2, '0');
+            const m = String(fecha.getMonth() + 1).padStart(2, '0');
+            const y = fecha.getFullYear();
+            return `${d}/${m}/${y}`;
+        }
+
+        function parseSemanasDias(texto) {
+            if (!texto) return null;
+            let semanas = 0;
+            let dias = 0;
+
+            if (texto.includes('+')) {
+                const partes = texto.split('+');
+                semanas = parseInt(partes[0], 10);
+                dias = parseInt(partes[1], 10);
+            } else {
+                semanas = parseInt(texto, 10);
+                dias = 0;
+            }
+
+            if (isNaN(semanas) || isNaN(dias)) return null;
+            return (semanas * 7) + dias;
+        }
+
+        function crearFechaLocal(valFecha) {
+            const partes = valFecha.split('-');
+            return new Date(partes[0], partes[1] - 1, partes[2]);
+        }
+
+        function actualizarCalculosGlobales() {
+            calcularPorFUR();
+            calcularFechaPorEG();
+            calcularEGPorFechaControl();
+            calcularVentanasEcograficas();
+        }
+
+        // 1. FUR & EDAD GESTACIONAL
+        function calcularPorFUR() {
+            const val = document.getElementById('inputFUR').value;
+            if (!val) {
+                document.getElementById('outFPP').innerText = '-';
+                document.getElementById('outEG_FUR').innerText = '-';
+                return;
+            }
+            const fur = crearFechaLocal(val);
+            const hoy = new Date();
+            hoy.setHours(0,0,0,0);
+            
+            const fpp = new Date(fur);
+            fpp.setDate(fpp.getDate() + 280);
+            document.getElementById('outFPP').innerText = formatearFecha(fpp);
+
+            const diffTime = hoy - fur;
+            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays < 0) {
+                document.getElementById('outEG_FUR').innerText = 'Fecha futura';
+                return;
+            }
+
+            if (diffDays >= 294) {
+                document.getElementById('outEG_FUR').innerText = '> 42 semanas';
+            } else {
+                const sem = Math.floor(diffDays / 7);
+                const dias = diffDays % 7;
+                document.getElementById('outEG_FUR').innerText = `${sem}+${dias}`;
+            }
+        }
+
+        // 2. FECHA POR EDAD GESTACIONAL
+        function calcularFechaPorEG() {
+            const valFUR = document.getElementById('inputFUR').value;
+            const texto = document.getElementById('inputEG1').value;
+            const diasTotales = parseSemanasDias(texto);
+
+            if (!valFUR || diasTotales === null) {
+                document.getElementById('outFechaPorEG').innerText = '-';
+                return;
+            }
+
+            const fur = crearFechaLocal(valFUR);
+            const fechaResultante = new Date(fur);
+            fechaResultante.setDate(fur.getDate() + diasTotales);
+            document.getElementById('outFechaPorEG').innerText = formatearFecha(fechaResultante);
+        }
+
+        // 3. EDAD GESTACIONAL POR FECHA DE CONTROL
+        function calcularEGPorFechaControl() {
+            const valFUR = document.getElementById('inputFUR').value;
+            const valControl = document.getElementById('inputFechaControl').value;
+
+            if (!valFUR || !valControl) {
+                document.getElementById('outEGActual').innerText = '-';
+                return;
+            }
+
+            const fur = crearFechaLocal(valFUR);
+            const fechaControl = crearFechaLocal(valControl);
+
+            const diffTime = fechaControl - fur;
+            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays < 0) {
+                document.getElementById('outEGActual').innerText = 'Anterior a FUR';
+                return;
+            }
+
+            const sem = Math.floor(diffDays / 7);
+            const dias = diffDays % 7;
+            document.getElementById('outEGActual').innerText = `${sem}+${dias}`;
+        }
+
+        // 4. FUR POR EDAD GESTACIONAL
+        function calcularFURPorEG() {
+            const texto = document.getElementById('inputEG2').value;
+            const diasTotales = parseSemanasDias(texto);
+            if (diasTotales === null) {
+                document.getElementById('outFURPorEG').innerText = '-';
+                return;
+            }
+            const hoy = new Date();
+            hoy.setHours(0,0,0,0);
+            const furEstimada = new Date(hoy);
+            furEstimada.setDate(hoy.getDate() - diasTotales);
+            document.getElementById('outFURPorEG').innerText = formatearFecha(furEstimada);
+        }
+
+        // CÁLCULO DE VENTANAS ECOGRÁFICAS
+        function calcularVentanasEcograficas() {
+            const valFUR = document.getElementById('inputFUR').value;
+
+            if (!valFUR) {
+                document.getElementById('outVentana11_13').innerText = '-';
+                document.getElementById('outVentana22_23').innerText = '-';
+                document.getElementById('outVentana28_30').innerText = '-';
+                return;
+            }
+
+            const fur = crearFechaLocal(valFUR);
+
+            // 11+0 (77 días) a 13+6 (97 días)
+            const f11 = new Date(fur); f11.setDate(fur.getDate() + 77);
+            const f13 = new Date(fur); f13.setDate(fur.getDate() + 97);
+            document.getElementById('outVentana11_13').innerText = `${formatearFecha(f11)} — ${formatearFecha(f13)}`;
+
+            // 22+0 (154 días) a 23+6 (167 días)
+            const f22 = new Date(fur); f22.setDate(fur.getDate() + 154);
+            const f23 = new Date(fur); f23.setDate(fur.getDate() + 167);
+            document.getElementById('outVentana22_23').innerText = `${formatearFecha(f22)} — ${formatearFecha(f23)}`;
+
+            // 28+0 (196 días) a 30+0 (210 días)
+            const f28 = new Date(fur); f28.setDate(fur.getDate() + 196);
+            const f30 = new Date(fur); f30.setDate(fur.getDate() + 210);
+            document.getElementById('outVentana28_30').innerText = `${formatearFecha(f28)} — ${formatearFecha(f30)}`;
+        }
+
+        function limpiarTodo() {
+            document.getElementById('inputFUR').value = '';
+            document.getElementById('inputEG1').value = '';
+            document.getElementById('inputFechaControl').value = '';
+            document.getElementById('inputEG2').value = '';
+
+            document.getElementById('outFPP').innerText = '-';
+            document.getElementById('outEG_FUR').innerText = '-';
+            document.getElementById('outFechaPorEG').innerText = '-';
+            document.getElementById('outEGActual').innerText = '-';
+            document.getElementById('outFURPorEG').innerText = '-';
+
+            document.getElementById('outVentana11_13').innerText = '-';
+            document.getElementById('outVentana22_23').innerText = '-';
+            document.getElementById('outVentana28_30').innerText = '-';
+        }
+    </script>
+</body>
+</html>
